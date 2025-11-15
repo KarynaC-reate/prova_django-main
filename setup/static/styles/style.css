@@ -1,0 +1,35 @@
+
+/* Exemplo de Estilo Básico */
+body {
+    background-color: #f8fafc; /* Cor de fundo clara para todo o corpo */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo para links de navegação principal */
+.nav-link {
+    font-weight: 600;
+    color: #4b5563; /* Cor cinza escura */
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #3b82f6; /* Cor azul no hover */
+}
+
+/* Estilo para botões primários (caso não use Tailwind) */
+.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4f46e5;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+}

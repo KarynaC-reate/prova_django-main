@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina }}</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6fa;
+        }
+
+        .content-box {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            line-height: 1.5;
+        }
+
+        /* Sombra no header */
+        .header-shadow {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- 🔵 HEADER COM CONTRASTE -->
+    <header class="bg-indigo-950 shadow-lg sticky top-0 z-10 border-b border-indigo-900">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+
+        <h1 class="text-3xl font-extrabold text-white tracking-tight drop-shadow-lg">
+            {{ titulo_pagina }}
+        </h1>
+
+        <a href="{% url 'admin:index' %}"
+           class="bg-white text-indigo-950 font-semibold py-2 px-5 rounded-full text-sm shadow-lg hover:bg-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5">
+            Ir para Admin
+        </a>
+
+    </div>
+</header>
+
+
+    <!-- 🗂 CATÁLOGO -->
+    <main class="max-w-7xl mx-auto px-4 py-10">
+
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Catálogo de Documentos</h2>
+
+        <!-- Barra de pesquisa -->
+        <div class="mb-8">
+            <input type="text" id="searchInput" onkeyup="filterDocuments()"
+                   placeholder="Buscar por título, gênero ou conteúdo..."
+                   class="w-full p-4 border border-gray-300 rounded-xl shadow focus:ring-indigo-600 focus:border-indigo-600 transition text-gray-700">
+            <p class="text-sm text-gray-500 mt-2">Total de {{ documentos|length }} documentos cadastrados.</p>
+        </div>
+
+        {% if documentos %}
+        <!-- GRID -->
+        <div id="documentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% for doc in documentos %}
+                <!-- CARD COM ALTO CONTRASTE -->
+                <div class="document-card bg-white rounded-2xl border border-gray-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 p-6">
+
+                    <!-- Badges com contraste -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-600 text-white shadow-sm">
+                            {{ doc.genero.nome }}
+                        </span>
+
+                        {% if doc.genero.tipo %}
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-green-600 text-white shadow-sm">
+                            {{ doc.genero.tipo.nome }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Título -->
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">
+                        {{ doc.titulo }}
+                    </h3>
+
+                    <!-- Conteúdo -->
+                    <p class="text-gray-700 content-box min-h-[6em] mb-4">
+                        {{ doc.conteudo }}
+                    </p>
+
+                    <!-- Rodapé do card -->
+                    <div class="text-sm text-gray-600 border-t pt-4 mt-auto flex justify-between items-center">
+
+                        <span class="font-medium">
+                            {{ doc.data_cadastro|date:"d/m/Y H:i" }}
+                        </span>
+
+                        <button class="text-indigo-700 hover:text-indigo-900 font-semibold text-sm transition">
+                            Ler Mais →
+                        </button>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+        <!-- SEM DOCUMENTOS -->
+        <div class="bg-white rounded-2xl shadow-xl p-12 text-center border-2 border-dashed border-gray-300">
+
+            <p class="text-2xl text-gray-800 font-bold mb-3">🗂️ Nenhum documento ainda</p>
+            <p class="text-gray-600 mb-6">
+                Comece cadastrando gêneros e documentos na área administrativa.
+            </p>
+
+            <a href="{% url 'admin:index' %}"
+               class="bg-indigo-700 text-white hover:bg-indigo-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition">
+                Acessar Admin
+            </a>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="mt-16 py-6 text-center text-sm text-gray-200 border-t border-indigo-900 bg-indigo-950">
+    Sistema de Catalogação Textual © {{ "now"|date:"Y" }}
+    </footer>
+
+</body>
+
+<script>
+function filterDocuments() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.getElementsByClassName('document-card');
+
+    for (let card of cards) {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "" : "none";
+    }
+}
+</script>
+
+</html>

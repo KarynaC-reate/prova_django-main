@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Administrador | Catalogador</title>
+    <!-- Carrega o Tailwind CSS CDN para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: white; }
+        .card-shadow { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Cabeçalho -->
+        <header class="bg-blue-800 shadow-xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <h1 class="text-3xl font-extrabold text-white tracking-wide">
+                    Painel do Administrador
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'catalogacao:dashboard' %}"
+                       class="text-blue-200 hover:text-white font-medium transition duration-300">
+                        Ver Catálogo
+                    </a>
+                    <a href="/admin/logout/"
+                       class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-8 border-b-2 border-blue-200 pb-2">Visão Geral do Sistema</h2>
+
+            <!-- Cards de Estatísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+
+                <!-- Card Documentos -->
+                <div class="bg-grey p-6 rounded-xl card-shadow border-l-4 border-indigo-500 hover:scale-[1.02] transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Documentos Catalogados</p>
+                            <p class="text-4xl font-bold text-gray-900 mt-1">{{ total_documentos }}</p>
+                        </div>
+                        <svg class="w-12 h-12 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                </div>
+
+                <!-- Card Gêneros -->
+                <div class="bg-grey p-6 rounded-xl card-shadow border-l-4 border-green-500 hover:scale-[1.02] transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Gêneros Textuais</p>
+                            <p class="text-4xl font-bold text-gray-900 mt-1">{{ total_generos }}</p>
+                        </div>
+                        <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h.01M7 11h.01M7 15h.01M7 19h.01M17 3h.01M17 7h.01M17 11h.01M17 15h.01M17 19h.01M12 3h.01M12 7h.01M12 11h.01M12 15h.01M12 19h.01M3 21a2 2 0 002 2h14a2 2 0 002-2V3a2 2 0 00-2-2H5a2 2 0 00-2 2v18z"></path></svg>
+                    </div>
+                </div>
+
+                <!-- Card Tipos -->
+                <div class="bg-grey p-6 rounded-xl card-shadow border-l-4 border-amber-500 hover:scale-[1.02] transition duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Tipos de Gêneros</p>
+                            <p class="text-4xl font-bold text-gray-900 mt-1">{{ total_tipos }}</p>
+                        </div>
+                        <svg class="w-12 h-12 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m-4 0h4m-4 0L7 4m13 14h-4M18 4h-4m4 0l-3 6"></path></svg>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Links Rápidos de Cadastro -->
+            <div class="bg-grey p-8 rounded-xl card-shadow">
+                <h3 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-3">Acesso Rápido ao Cadastro</h3>
+                <p class="text-gray-600 mb-6">Use os links abaixo para realizar o CRUD (Criar, Ler, Atualizar, Deletar) das entidades no sistema, usando a interface robusta do Django Admin.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Link Cadastrar Documentos -->
+                    <a href="/admin/catalogos/documento/add/"
+                       class="flex items-center justify-center p-4 bg-indigo-500 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-indigo-600 transform hover:scale-[1.03] transition duration-300">
+                        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Novo Documento
+                    </a>
+
+                    <!-- Link Cadastrar Gêneros -->
+                    <a href="/admin/catalogos/genero/add/"
+                       class="flex items-center justify-center p-4 bg-green-500 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-green-600 transform hover:scale-[1.03] transition duration-300">
+                        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Novo Gênero
+                    </a>
+
+                    <!-- Link Cadastrar Tipos -->
+                    <a href="/admin/catalogos/tipo/add/"
+                       class="flex items-center justify-center p-4 bg-amber-500 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-amber-600 transform hover:scale-[1.03] transition duration-300">
+                        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Novo Tipo
+                    </a>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="/admin/" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-300 underline">
+                        Acessar a página principal do Django Admin
+                    </a>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="mt-auto py-4 text-center text-sm text-gray-500 border-t bg-white">
+            Sistema de Catalogação Textual - Área Administrativa
+        </footer>
+    </div>
+
+</body>
+</html>
